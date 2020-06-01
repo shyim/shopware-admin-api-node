@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Api from './api.js';
+export {default as Criteria} from './data/criteria.data.js';
 
 export async function createFromPasswordAndLogin(url, username, password, version) {
     version = version || 1;
@@ -14,7 +15,7 @@ export async function createFromPasswordAndLogin(url, username, password, versio
             password: password
         });
     } catch(err) {
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
             throw new Error('Invalid credentials');
         }
 
