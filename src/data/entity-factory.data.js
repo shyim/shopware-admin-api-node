@@ -1,0 +1,73 @@
+import Entity from './entity.data.js';
+import EntityCollection from './entity-collection.data.js';
+import Criteria from './criteria.data.js';
+import {v4} from 'uuid';
+
+export default class EntityFactory {
+    /**
+     * Creates a new entity for the provided entity name.
+     * Returns null for unknown entities.
+     *
+     * @param {String} entityName
+     * @param {String} id
+     * @param {Object} context
+     * @returns {Entity|null}
+     */
+    create(entityName, id, context) {
+        id = id || v4().replace(/-/g, '');
+
+        const definition = Shopware.EntityDefinition.get(entityName);
+
+        if (!definition) {
+            console.warn('Entity factory', `No schema found for entity ${entityName}`);
+            return null;
+        }
+
+        const data = {
+            extensions: {}
+        };
+
+        const toManyAssociations = definition.getToManyAssociations();
+        Object.keys(toManyAssociations).forEach((property) => {
+            const associatedProperty = toManyAssociations[property].entity;
+
+            if (toManyAssociations[property].flags.extension) {
+                data.extensions[property] = this.createCollection(
+                    entityName,
+                    `${id}/extensions`,
+                    property,
+                    associatedProperty,
+                    context
+                );
+            } else {
+                data[property] = this.createCollection(entityName, id, property, associatedProperty, context);
+            }
+        });
+
+        const entity = new Entity(id, entityName, data);
+        entity.markAsNew();
+
+        return entity;
+    }
+
+    /**
+     * @private
+     * @param {String} entity
+     * @param {String} id
+     * @param {String} property
+     * @param {String} related
+     * @param {Object} context
+     * @returns {EntityCollection}
+     */
+    createCollection(entity, id, property, related, context) {
+        const subRoute = property.replace(/_/g, '-');
+        const route = entity.replace(/_/g, '-');
+        const source = `/${route}/${id}/${subRoute}`;
+
+        const criteria = new Criteria();
+        criteria.setLimit(10);
+        criteria.setPage(1);
+
+        return new EntityCollection(source, related, context, criteria);
+    }
+}

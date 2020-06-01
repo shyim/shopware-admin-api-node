@@ -1,0 +1,29 @@
+{
+  "name": "shopware-admin-api",
+  "version": "0.1.0",
+  "description": "Shopware API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shyim/shopware-admin-api-node.git"
+  },
+  "keywords": [
+    "Shopware",
+    "Admin-API"
+  ],
+  "author": "Shyim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shyim/shopware-admin-api-node/issues"
+  },
+  "homepage": "https://github.com/shyim/shopware-admin-api-node#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "lodash": "^4.17.15",
+    "uuid": "^8.1.0"
+  }
+}
