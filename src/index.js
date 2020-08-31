@@ -36,9 +36,8 @@ export async function createFromIntegration(url, id, secret, version) {
     try {
         res = await axios.post(`${url}/api/oauth/token`, {
             client_id: id,
-            grant_type: "client_credentials",
-            client_id: id,
-            client_secret: secret
+            client_secret: secret,
+            grant_type: "client_credentials"
         });
     } catch(err) {
         if (err.response.status === 401) {
