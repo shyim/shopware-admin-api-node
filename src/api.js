@@ -10,15 +10,15 @@ export default class Api {
         this.url = url;
         this.client = createClient(url, token, version)
         this.version = version;
+        this.schema = require('./data/schema.json')
     }
 
     async _initialize() {
-        let schema = await this.client.get('_info/entity-schema.json');
 
         this.EntityDefinition = EntityDefinition;
         
-        Object.keys(schema.data).forEach((entityName) => {
-            this.EntityDefinition.add(entityName, schema.data[entityName]);
+        Object.keys(this.schema).forEach((entityName) => {
+            this.EntityDefinition.add(entityName, this.schema[entityName]);
         });
 
         const hydrator = new EntityHydrator(this.EntityDefinition);
@@ -39,7 +39,7 @@ export default class Api {
 
             return new Repository(
                 route,
-                definition.entity,
+                entityName,
                 this.client,
                 hydrator,
                 changesetGenerator,

@@ -462,8 +462,7 @@ export default class Repository {
         let headers = {
             Accept: 'application/vnd.api+json',
             Authorization: `Bearer ${context.authToken.access}`,
-            'Content-Type': 'application/json',
-            'sw-api-compatibility': compatibility
+            'Content-Type': 'application/json'
         };
 
         if (context.languageId) {

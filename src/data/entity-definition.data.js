@@ -25,7 +25,7 @@ export default class EntityDefinition {
      */
     getPrimaryKeyFields() {
         return this.filterProperties((property) => {
-            return property.flags.primary_key === true;
+            return property.flags.primary === true;
         });
     }
 
