@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export function createClient(url, token, version) {
     const client = axios.create({
-        baseURL: `${url}/api/v${version}`
+        baseURL: `${url}/api`
     })
 
     client.defaultUrl = url;
